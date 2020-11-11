@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <link rel="stylesheet" href="assets/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/bootstrap/4.4/examples/dashboard/dashboard.css">
+        <link rel="stylesheet" href="assets/fontawesome/5.12.0/css/all.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <img class="mb-4" src="assets/logo_llar.jpg" alt="" width="150" height="150">
+                <div class="ml-1 py-5 text-center">
+                    <h1><i class="far fa-calendar-alt"></i>DATA DE RESERVA NO DISPONIBLE</h1>
+                </div>                
+            </div>
+            <div class="row">
+                <?php require_once('modalwindow.php'); ?>
+                <div class="col-md-12 order-md-1">
+                    <p>Benvolgut/da Sr./Sra.</p>
+                    <p>En sap greu comunicar-li que aquesta data de reserva ja no està disponible.</p>
+                    <p>Per motius organitzatius el La Llar Fundació li recorda que cal realitzar les reserves de visites en dia laborable amb 24 hores d'antelació al dia de la visita.</p>
+					<p>Per a qualsevol dubte o aclariment poseu-vos en contacte amb nosaltres mitjançant WhatsApp al número 678.811.514</p>
+                    <p>La Llar.</p>
+                </div>
+            </div>
+        </div>
+        <script src="assets/jquery/jquery-3.5.1.min.js"></script>
+        <script src="assets/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/myfw/js/myfw.js"></script>
+        <script>
+            $(document).ready(function(){ /* al acaba de carregar la pàgina */
+                
+                /* crida al mètode que desahiblita els botons de navagació del navegador */
+                dissableHistory();
+                
+                 /* crida al mètode que mostra la finestra modal si existeix */
+                $("#myModal").modal(
+                    {
+                        backdrop: 'static',
+                        keyboard: false
+                    }
+                );
+        
+            });
+            
+        </script>
+    </body>
+</html>
+  
