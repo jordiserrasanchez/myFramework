@@ -66,6 +66,10 @@ final class userscontroller extends controller {
     
     /**  @var integer $canviInici Indica si cal canviar la paraula de pas al iniciar la sessió */
     private $canviInici;
+
+    /**  @var integer $esAdministrador Indica si l'usuari és administrador */
+    private $esAdministrador;
+    
    
     /**  @var integer $intents Conté el número de intents erronis acumulats */
     private $intents;    
@@ -255,6 +259,7 @@ final class userscontroller extends controller {
         $this->noCaduca = ( $this->model->link->real_escape_string( filter_has_var ( INPUT_POST, 'noCaduca' ) ) )?1:0;
         $this->noBloqueja = ( $this->model->link->real_escape_string( filter_has_var ( INPUT_POST, 'noBloqueja' ) ) )?1:0;
         $this->canviInici = ( $this->model->link->real_escape_string( filter_has_var ( INPUT_POST, 'canviInici' ) ) )?1:0;
+        $this->esAdministrador = ( $this->model->link->real_escape_string( filter_has_var ( INPUT_POST, 'esAdministrador' ) ) )?1:0;
         $this->intents = $this->model->link->real_escape_string( filter_input ( INPUT_POST, 'intents' ) );
         $this->idPolitica = $this->model->link->real_escape_string( filter_input ( INPUT_POST, 'idPolitica' ) );
         
@@ -267,7 +272,7 @@ final class userscontroller extends controller {
     private function insertUser ( ) {
     
         /**  @var string $fields Conté els camps per la consulta */
-        $fields = "'" . $this->nom . "','" . $this->cognoms . "','" . $this->correu ."'," . $this->correuConfirmat . "," . $this->noCaduca . "," . $this->noBloqueja . "," . $this->canviInici . "," . $this->intents . "," . $this->idPolitica;
+        $fields = "'" . $this->nom . "','" . $this->cognoms . "','" . $this->correu ."'," . $this->correuConfirmat . "," . $this->noCaduca . "," . $this->noBloqueja . "," . $this->canviInici . "," . $this->esAdministrador . "," . $this->intents . "," . $this->idPolitica;
 
         if ( $fields != "" ) { /** si s'han omplert els camps */
             
@@ -304,7 +309,7 @@ final class userscontroller extends controller {
     private function updateUser ( $idUsuari ) {
 
         /**  @var string $fields Conté els camps per la consulta */
-        $fields = "nom='" . $this->nom . "',cognoms='" . $this->cognoms . "',correu='" . $this->correu . "' ,correuConfirmat=" . $this->correuConfirmat . ",noCaduca=" . $this->noCaduca . ",noBloqueja=" . $this->noBloqueja . ",canviInici=" . $this->canviInici . ",intents=" . $this->intents . ",idPolitica=" . $this->idPolitica;
+        $fields = "nom='" . $this->nom . "',cognoms='" . $this->cognoms . "',correu='" . $this->correu . "' ,correuConfirmat=" . $this->correuConfirmat . ",noCaduca=" . $this->noCaduca . ",noBloqueja=" . $this->noBloqueja . ",canviInici=" . $this->canviInici . ",esAdministrador=" . $this->esAdministrador . ",intents=" . $this->intents . ",idPolitica=" . $this->idPolitica;
 
         if ( $fields != "" ) {  /** si s'han omplert els camps */
             

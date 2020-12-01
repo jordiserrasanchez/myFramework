@@ -127,6 +127,7 @@ final class ajaxuserscontroller {
         $html.= '            <th>No es caduca</th>';
         $html.= '            <th>No es bloqueja</th>';
         $html.= '            <th>Canviar al inici</th>';
+        $html.= '            <th>És adminsitrador</th>';
         $html.= '            <th>Politica</th>';
         $html.= '        </tr>';
         $html.= '    </thead>';
@@ -169,6 +170,10 @@ final class ajaxuserscontroller {
         $iconaCanviInici = ($dato["canviInici"]=='1') ? "<i class=\"far fa-check-square\"></i>" : "<i class=\"far fa-square\"></i>";
         $html.= "            <td class=\"text-center\">" . $iconaCanviInici . "</td>";        
 
+        $iconaEsAdministrador = ($dato["esAdministrador"]=='1') ? "<i class=\"far fa-check-square\"></i>" : "<i class=\"far fa-square\"></i>";
+        $html.= "            <td class=\"text-center\">" . $iconaEsAdministrador . "</td>";        
+        
+        
         $html.= "            <td>" . $dato["politica"] . "</td>";
         
         $html.= "        </tr>";
