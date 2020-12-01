@@ -68,7 +68,7 @@ final class menu {
         }
         
         $html.= '<hr class="mb-4">';
-        $usuariAdmin = permis::userIsAdmin ( $_SESSION['idUsuari'] );
+        $usuariAdmin = usuari::isAdmin ( $_SESSION['idUsuari'] );
         /** mòduls sistema */
         foreach ( $modulsSistema as $modul ) {
             if ((permis::getPermisLectura ( $_SESSION['idUsuari'] , $modul["idModul"])) || $usuariAdmin ) {            

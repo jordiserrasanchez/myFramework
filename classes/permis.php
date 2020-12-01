@@ -377,27 +377,5 @@ final class permis extends db {
         
         return $ret;
     }
-    
-     /** 
-      * Comprova si un usuari és administrador.
-      * @param string $idUsuari Identificador de l'usuari.
-      * @return bool Retorna un valor booleà que indica si s'ha realitzat exitosament.
-      * @access public
-      */    
-    public static function userIsAdmin ( $idUsuari ) {
-        $ret = false;
-        
-        /** crea l'objecte del model usuari */
-        $modelUsuari = new usuari();
-            
-        /** comprova si l'usuari es administrador */
-        $esAdmin  = $modelUsuari->isAdmin ( $idUsuari );       
-        
-        if (  ( int ) $esAdmin['isAdmin']  > 0 ) { /* si l'usuari es administrador */
-            $ret = true;
-        }
-        
-        return $ret;
-    }
-    
+      
 }

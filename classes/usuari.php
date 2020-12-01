@@ -259,15 +259,28 @@ final class usuari extends db {
         return $this->getRow ( $sql ); 
     }
 
-    /** 
-      * Comprova si l'usuari és Administrador.
-      * @param integer $idUsuari Identificador de l'usuari. 
+     /** 
+      * Comprova si un usuari és administrador.
+      * @param string $idUsuari Identificador de l'usuari.
       * @return bool Retorna un valor booleà que indica si s'ha realitzat exitosament.
       * @access public
       */    
-    public function isAdmin( $idUsuari ) {
+    public static function isAdmin( $idUsuari ) {
+        
+        $ret = false;
+        /** crea l'objecte base de dades */
+        $db = new db ();        
+        
         $sql = "SELECT COUNT(*) as isAdmin FROM " . _DB_PREFIX_ . "usuaris WHERE idUsuari=". $idUsuari . " AND esAdministrador=1";
-        return $this->getRow ( $sql ); 
+        
+        $row = $db->getRow ( $sql );
+        
+        if ( $row['isAdmin'] > 0 ) { 
+            $ret = true;
+        }
+        
+        return $ret;
     }
+    
     
 }
