@@ -128,6 +128,12 @@ and open the template in the editor.
                                             <label class="custom-control-label" for="canviInici">Canviar al inici</label>
                                         </div>                            
                                     </div>
+                                    <div class="col-md-2 mb-3">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="esAdministrador" name="esAdministrador" value="<?php echo $this->usuari[ 'esAdministrador' ] ?? ""; ?>" <?php if ( ( isset ( $this->usuari[ 'esAdministrador' ] ) ) && ( $this->usuari[ 'esAdministrador' ] == 1 ) ) { echo "checked"; } else { echo ""; } ?>>
+                                            <label class="custom-control-label" for="esAdministrador">És administrador</label>
+                                        </div>                            
+                                    </div>                                    
                                 </div>
                                 <hr class="mb-4">
                                 <button class="btn btn-primary" type="submit">Desar</button>
