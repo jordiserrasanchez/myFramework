@@ -53,7 +53,7 @@ final class usuari extends db {
         //$sql = "SELECT * FROM " . _DB_PREFIX_ . "usuaris";
         
         $sql = "SELECT u.idUsuari, u.nom, u.cognoms, u.correu, u.correuConfirmat, u.intents, u.token, u.expiracioToken, u.noCaduca, 
-            u.noBloqueja, u.canviInici, u.idPolitica, p.politica, p.umbralIntents, p.umbralCaducitat, p. umbralHistoria, p.requereixComplexitat, 
+            u.noBloqueja, u.canviInici, u.esAdministrador, u.idPolitica, p.politica, p.umbralIntents, p.umbralCaducitat, p. umbralHistoria, p.requereixComplexitat, 
             p.longitutMinima FROM " . _DB_PREFIX_ . "usuaris u LEFT JOIN " . _DB_PREFIX_ . "politiques p ON u.idPolitica = p.idPolitica";
         
         
@@ -108,7 +108,7 @@ final class usuari extends db {
       * @access public
       */ 
     public function afegeixUsuari ( $fields ) {
-        $sql = "INSERT INTO " . _DB_PREFIX_ . "usuaris (nom, cognoms, correu, correuConfirmat, intents, noCaduca, noBloqueja, canviInici, idPolitica) VALUES (" . $fields . ")";
+        $sql = "INSERT INTO " . _DB_PREFIX_ . "usuaris (nom, cognoms, correu, correuConfirmat, intents, noCaduca, noBloqueja, canviInici, esAdministrador, idPolitica) VALUES (" . $fields . ")";
         return $this->insertRow ( $sql );         
     }
     
@@ -257,6 +257,17 @@ final class usuari extends db {
     public function retornaNumeroUsuaris ( ) {
         $sql = "SELECT COUNT(*) as TotalUsuaris FROM " . _DB_PREFIX_ . "usuaris";
         return $this->getRow ( $sql ); 
-        
-    }    
+    }
+
+    /** 
+      * Comprova si l'usuari és Administrador.
+      * @param integer $idUsuari Identificador de l'usuari. 
+      * @return bool Retorna un valor booleà que indica si s'ha realitzat exitosament.
+      * @access public
+      */    
+    public function isAdmin( $idUsuari ) {
+        $sql = "SELECT COUNT(*) as isAdmin FROM " . _DB_PREFIX_ . "usuaris WHERE idUsuari=". $idUsuari . " AND esAdministrador=1";
+        return $this->getRow ( $sql ); 
+    }
+    
 }

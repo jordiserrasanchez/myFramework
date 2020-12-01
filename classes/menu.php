@@ -57,24 +57,28 @@ final class menu {
 
         /** mòduls d'usuari */
         foreach ( $modulsUsuari as $modul ) {
-            $html.= '           <li class="nav-item">';
-            $html.= '               <form name="form" action="index.php?controlador=' . $modul["controlador"] .'&action=ViewList" method="post">';
-            $html.= '                   <input type="text" name="menu" id="menu" value="dashboard" hidden>';
-            $html.= '                   <button type="submit" name="submit" class="nav-link btn btn-link">' . $modul["icona"] . ' ' . $modul["modul"] . '</button>';
-            $html.= '               </form>';
-            $html.= '           </li>';
+            if (permis::getPermisLectura ( $_SESSION['idUsuari'] , $modul["idModul"])) {
+                $html.= '           <li class="nav-item">';
+                $html.= '               <form name="form" action="index.php?controlador=' . $modul["controlador"] .'&action=ViewList" method="post">';
+                $html.= '                   <input type="text" name="menu" id="menu" value="dashboard" hidden>';
+                $html.= '                   <button type="submit" name="submit" class="nav-link btn btn-link">' . $modul["icona"] . ' ' . $modul["modul"] . '</button>';
+                $html.= '               </form>';
+                $html.= '           </li>';
+            }
         }
         
         $html.= '<hr class="mb-4">';
-        
+        $usuariAdmin = permis::userIsAdmin ( $_SESSION['idUsuari'] );
         /** mòduls sistema */
         foreach ( $modulsSistema as $modul ) {
-            $html.= '           <li class="nav-item">';
-            $html.= '               <form name="form" action="index.php?controlador=' . $modul["controlador"] .'&action=ViewList" method="post">';
-            $html.= '                   <input type="text" name="menu" id="menu" value="dashboard" hidden>';
-            $html.= '                   <button type="submit" name="submit" class="nav-link btn btn-link">' . $modul["icona"] . ' ' . $modul["modul"] . '</button>';
-            $html.= '               </form>';
-            $html.= '           </li>';
+            if ((permis::getPermisLectura ( $_SESSION['idUsuari'] , $modul["idModul"])) || $usuariAdmin ) {            
+                $html.= '           <li class="nav-item">';
+                $html.= '               <form name="form" action="index.php?controlador=' . $modul["controlador"] .'&action=ViewList" method="post">';
+                $html.= '                   <input type="text" name="menu" id="menu" value="dashboard" hidden>';
+                $html.= '                   <button type="submit" name="submit" class="nav-link btn btn-link">' . $modul["icona"] . ' ' . $modul["modul"] . '</button>';
+                $html.= '               </form>';
+                $html.= '           </li>';
+           }
         }        
 
         $html.= '       </ul>';

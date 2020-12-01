@@ -282,13 +282,22 @@ final class permis extends db {
         
     }
     
-    
+    /** 
+      * Comprova si un usuari te permisos de lectura sobre un mòdul.
+      * @param string $idUsuari Identificador de l'usuari.
+      * @param string $idModul Identificador del mòdul.
+      * @return bool Retorna un valor booleà que indica si s'ha realitzat exitosament.
+      * @access public
+      */    
     public static function getPermisLectura ( $idUsuari , $idModul ) {
         $ret = false;
         
+       /** crea l'objecte base de dades */  
         $db = new db ();
+        
         $sql = "SELECT permis FROM " . _DB_PREFIX_ . "permisos WHERE tipus=0 AND id=" . $idUsuari . " AND idModul=" . $idModul;
         $row = $db->getRow ( $sql );
+        
         if ( $row != false ) { /** si torna resultats */
             if ( count ( $row ) > 0 ) {
                 if ( $row['permis'] >= 1 ) {
@@ -299,19 +308,68 @@ final class permis extends db {
         }
         
         if ( $ret == false) { /** si amb els usuaris no hi ha hagut exit */
-
+            
+            /** crea l'objecte del model grup */
             $modelGrup = new grup();
 
             /** recupera una llista de grups en la que es troba l'usuari */
             $grups = $modelGrup->getLlistaGrupsByUser( $idUsuari );
 
-            foreach ($grups as $grup) {
+            foreach ($grups as $grup) { /* per cada linia retornada */
 
-               $sql = "SELECT permis FROM " . _DB_PREFIX_ . "permisos WHERE tipus=1 AND id=" . $grup['grup'] . " AND idModul=" . $idModul;
-               $row = $this->getRow ( $sql );
-                if ( count ( $row ) > 0 ) {
+                $sql = "SELECT permis FROM " . _DB_PREFIX_ . "permisos WHERE tipus=1 AND id=" . $grup['idGrup'] . " AND idModul=" . $idModul;
+                $row = $db->getRow ( $sql );
+               
+                if (!is_null( $row )) {
+                    
                     if ( $row['permis'] >= 1 ) {
                         $ret = true;
+                    }
+                }
+                
+            }
+        }
+        
+        return $ret;
+    }
+ 
+    /** 
+      * Comprova si un usuari te permisos d'escriptura sobre un mòdul.
+      * @param string $idUsuari Identificador de l'usuari.
+      * @param string $idModul Identificador del mòdul.
+      * @return bool Retorna un valor booleà que indica si s'ha realitzat exitosament.
+      * @access public
+      */     
+    public static function getPermisEscriptura ( $idUsuari , $idModul ) {
+        $ret = false;
+        
+        /** crea l'objecte base de dades */
+        $db = new db ();        
+        
+        $sql = "SELECT permis FROM " . _DB_PREFIX_ . "permisos WHERE tipus=0 AND id=" . $idUsuari . " AND idModul=" . $idModul;
+        $row = $db->getRow ( $sql );
+        
+        if ( count ( $row ) > 0 ) {
+            if ( $row['permis'] > 1 ) {
+                $ret = true;
+
+            }
+        } else {
+        
+            /** crea l'objecte del model grup */
+            $modelGrup = new grup();
+            
+            /** recupera una llista de grups en la que es troba l'usuari */
+            $grups = $modelGrup->getLlistaGrupsByUser( $idUsuari );
+            
+            foreach ($grups as $grup) { /* per cada linia retornada */
+                
+               $sql = "SELECT permis FROM " . _DB_PREFIX_ . "permisos WHERE tipus=1 AND id=" . $grup['idGrup'] . " AND idModul=" . $idModul;
+               $row = $db->getRow ( $sql );
+                if (!is_null( $row )) {
+                    if ( $row['permis'] > 1 ) {
+                        $ret = true;
+            
                     }
                 }
             }
@@ -320,35 +378,23 @@ final class permis extends db {
         return $ret;
     }
     
-    public static function getPermisEscriptura ( $idUsuari , $idModul ) {
+     /** 
+      * Comprova si un usuari és administrador.
+      * @param string $idUsuari Identificador de l'usuari.
+      * @return bool Retorna un valor booleà que indica si s'ha realitzat exitosament.
+      * @access public
+      */    
+    public static function userIsAdmin ( $idUsuari ) {
         $ret = false;
-        $db = new db ();        
-        $sql = "SELECT permis FROM " . _DB_PREFIX_ . "permisos WHERE tipus=0 AND id=" . $idUsuari . " AND idModul=" . $idModul;
-        $row = $db->getRow ( $sql );
-        if ( count ( $row ) > 0 ) {
-            if ( $row['permis'] > 1 ) {
-                $ret = true;
-
-            }
-        } else {
         
+        /** crea l'objecte del model usuari */
+        $modelUsuari = new usuari();
             
-            $modelGrup = new grup();
-            
-            /** recupera una llista de grups en la que es troba l'usuari */
-            $grups = $modelGrup->getLlistaGrupsByUser( $idUsuari );
-            
-            foreach ($grups as $grup) {
-                
-               $sql = "SELECT permis FROM " . _DB_PREFIX_ . "permisos WHERE tipus=1 AND id=" . $grup['grup'] . " AND idModul=" . $idModul;
-               $row = $this->getRow ( $sql );
-                if ( count ( $row ) > 0 ) {
-                    if ( $row['permis'] > 1 ) {
-                        $ret = true;
-            
-                    }
-                }
-            }
+        /** comprova si l'usuari es administrador */
+        $esAdmin  = $modelUsuari->isAdmin ( $idUsuari );       
+        
+        if (  ( int ) $esAdmin['isAdmin']  > 0 ) { /* si l'usuari es administrador */
+            $ret = true;
         }
         
         return $ret;
