@@ -453,6 +453,12 @@ final class groupscontroller extends controller {
                 
             }
 
+            /** crea l'objecte permis */
+            $modelPermis = new permis ( );
+
+            /** esborra els permisos realcionats amb el grup */
+            $ret = $modelPermis->esborraPermisosGrup (filter_input ( INPUT_POST, 'idEliminar' ) );
+            
             /** executa el mètode per esborrar un grup */
             $this->grup = $this->model->esborraGrup( filter_input ( INPUT_POST, 'idEliminar' ) );
             

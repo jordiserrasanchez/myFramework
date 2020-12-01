@@ -347,6 +347,13 @@ final class userscontroller extends controller {
     private function deleteUser ( ) {
         
         if ( ( filter_has_var ( INPUT_POST, 'idEliminar' ) ) && ( ( filter_input ( INPUT_POST, 'idEliminar' ) ) != "" ) ) { /** si s'ha sel·leccionat usuari crida al mètode per esborrar-lo */
+
+
+            /** crea l'objecte permis */
+            $modelPermis = new permis ( );
+
+            /** esborra els permisos realcionats amb l'usuari */
+            $ret = $modelPermis->esborraPermisosUsuari (filter_input ( INPUT_POST, 'idEliminar' ) );
             
             /** executa el mètode per esborrar un usuari */
             $this->usuari = $this->model->esborraUsuari ( filter_input ( INPUT_POST, 'idEliminar' ) );
