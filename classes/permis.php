@@ -348,13 +348,16 @@ final class permis extends db {
         
         $sql = "SELECT permis FROM " . _DB_PREFIX_ . "permisos WHERE tipus=0 AND id=" . $idUsuari . " AND idModul=" . $idModul;
         $row = $db->getRow ( $sql );
-        
-        if ( count ( $row ) > 0 ) {
-            if ( $row['permis'] > 1 ) {
-                $ret = true;
+        if ( $row != false ) { /** si torna resultats */
+            if ( count ( $row ) > 0 ) {
+                if ( $row['permis'] > 1 ) {
+                    $ret = true;
 
+                }
             }
-        } else {
+        }
+        
+        if ( $ret == false) { /** si amb els usuaris no hi ha hagut exit */
         
             /** crea l'objecte del model grup */
             $modelGrup = new grup();
