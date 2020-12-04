@@ -139,7 +139,6 @@ and open the template in the editor.
                                 <button class="btn btn-primary" type="submit">Desar</button>
                                 <button class="btn btn-danger" type="submit" formaction="index.php?controlador=Users&action=ViewList">Anul·lar</button>
                                 <input type="text" name="idUsuari" id="idUsuari" value="<?php echo $this->usuari[ 'idUsuari' ] ?? ""; ?>" hidden>
-                                
                              </form>
                         </div>
                     </div>
@@ -171,4 +170,3 @@ and open the template in the editor.
         </script>
     </body>
 </html>
-     
