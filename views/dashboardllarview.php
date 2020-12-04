@@ -35,6 +35,7 @@ and open the template in the editor.
             <div class="row">
                 <?php echo $_SESSION['menu']; ?>
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <?php require_once('modalwindow.php'); ?>
                     <div class="row d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2 col-md-9">Taulell</h1>
                     </div>
@@ -71,6 +72,14 @@ and open the template in the editor.
                 /* crida al mètode que desahiblita els botons de navagació del navegador */
                 dissableHistory(); 
                 
+                /* crida al mètode que mostra la finestra modal si existeix */
+                $("#myModal").modal(
+                    {
+                        backdrop: 'static',
+                        keyboard: false
+                    }
+                );
+        
                 /* crida al mètode que carrega les visites */
                 showVisites();
                 
