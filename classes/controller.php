@@ -40,6 +40,12 @@ abstract class controller {
     /** @var string $menu Conté el menú */
     public $menu;
 
+    /** @var string $objecteModalWindow Conté l'objecte de la finestra modal */
+    public $objecteModalWindow;
+    
+    /** @var boolean $showModal Indica si s'ha de mostrar la finestra modal */
+    public $showModal;     
+    
     /** 
       * Mostra la vista establerta.
       * @access public
@@ -51,9 +57,21 @@ abstract class controller {
     public function errorLOPD  ( ) {
         
         $this->view = $_SESSION["viewPath"] . 'nopermisview.php';        
-    
-
     }
+    
+     /** 
+      * Genera la finestra modal amb l'error.
+      * @access private
+      */    
+    public function setError ( $errTitle, $errMessage ) {
+        
+        /** estableix la condició per mostrar la pantalla modal */
+        $this->showModal = true;
+
+        /** crea el objecte per mostrar la finestra modal */
+        $this->objecteModalWindow = new modalwindow (  $errTitle, $errMessage );
+        
+    }   
 
 }
 ?>
