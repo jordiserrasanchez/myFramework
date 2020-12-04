@@ -76,12 +76,6 @@ final class visittemplatescontroller extends controller {
     /**  @var string $llistaDepartaments Conté la llista de departaments */
     public $llistaDepartaments;
 
-    /** @var string $objecteModalWindow Conté l'objecte de la finestra modal */
-    public $objecteModalWindow;
-    
-    /** @var boolean $showModal Indica si s'ha de mostrar la finestra modal */
-    public $showModal;
-
     /** 
       * Inicialitza l'objecte.
       * @access public
@@ -686,20 +680,6 @@ final class visittemplatescontroller extends controller {
             /** estableix la vista que s'ha de mostrar */
             $this->view = $_SESSION["viewPath"] . 'generatevisitdayview.php';    
         }
-        
-    }
-
-    /** 
-      * Genera la finestra modal amb l'error.
-      * @access private
-      */    
-    private function setError ( $errTitle, $errMessage ) {
-        
-            /** estableix la condició per mostrar la pantalla modal */
-            $this->showModal = true;
-            
-            /** crea el objecte per mostrar la finestra modal */
-            $this->objecteModalWindow = new modalwindow (  $errTitle, $errMessage );
         
     }
    

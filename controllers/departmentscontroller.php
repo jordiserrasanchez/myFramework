@@ -49,12 +49,6 @@ final class departmentscontroller extends controller {
     /** @var string $descripcioDepartament Descripció del departament */
     private $descripcioDepartament;
 
-    /** @var string $objecteModalWindow Conté l'objecte de la finestra modal */
-    public $objecteModalWindow;
-    
-    /** @var boolean $showModal Indica si s'ha de mostrar la finestra modal */
-    public $showModal; 
-    
     /** 
       * Inicialitza l'objecte.
       * @access public
@@ -308,20 +302,6 @@ final class departmentscontroller extends controller {
             $this->viewList ( );
             
        }
-        
-    }
-    
-    /** 
-      * Genera la finestra modal amb l'error.
-      * @access private
-      */    
-    private function setError ( $errTitle, $errMessage ) {
-        
-            /** estableix la condició per mostrar la pantalla modal */
-            $this->showModal = true;
-            
-            /** crea el objecte per mostrar la finestra modal */
-            $this->objecteModalWindow = new modalwindow (  $errTitle, $errMessage );
         
     }
     

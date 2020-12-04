@@ -55,12 +55,6 @@ final class visitcontroller extends controller {
     /**  @var string $concepte Conté l'objecte departament */    
     public $departament;
     
-    /** @var string $objecteModalWindow Conté l'objecte de la finestra modal */
-    public $objecteModalWindow;
-    
-    /** @var boolean $showModal Indica si s'ha de mostrar la finestra modal */
-    public $showModal; 
-
     /**  @var string $modelDepartament Conté el model del departament */
     public $modelDepartament;
 
@@ -348,19 +342,5 @@ final class visitcontroller extends controller {
             
         
     }
-    
-    /** 
-      * Genera la finestra modal amb l'error.
-      * @access private
-      */    
-    private function setError ( $errTitle, $errMessage ) {
-        
-            /** estableix la condició per mostrar la pantalla modal */
-            $this->showModal = true;
-            
-            /** crea el objecte per mostrar la finestra modal */
-            $this->objecteModalWindow = new modalwindow (  $errTitle, $errMessage );
-        
-    }
-    
+       
 }
