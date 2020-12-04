@@ -56,7 +56,19 @@ abstract class controller {
     
     public function errorLOPD  ( ) {
         
-        $this->view = $_SESSION["viewPath"] . 'nopermisview.php';        
+                /** Recupera el número d'error */
+            $errTitle = 'Error (0x0000002)';
+            
+            /** Recupera el missatge d'error */
+            $errMessage = 'S\'ha produït un intent d\'accés il·legal a aquest contigut..';
+
+            /** Crida a la función que la finestra modal amb l'error */
+            $this->setError ( $errTitle, $errMessage );
+
+            /** estableix la vista que s'ha de mostrar */
+            $this->view = $_SESSION["viewPath"] . 'dashboardllarview.php';           
+        
+        //$this->view = $_SESSION["viewPath"] . 'nopermisview.php';        
     }
     
      /** 
