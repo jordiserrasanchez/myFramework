@@ -33,13 +33,13 @@
  * @version 1.0.0
  */
 final class conceptscontroller extends controller {
-
-    /** Contant que identifica el mòdul amb el que s'ha desat a la bbdd */
-    public const  _ID_MODUL_  = 3;    
-
-        /** Contant que amb el nom del mòdul amb el que s'ha desat a la bbdd */
-    public const  _TXT_MODUL_  = 'CONCEPTES';    
-
+ 
+    /** @var Identificador el mòdul amb el que s'ha desat a la bbdd */
+    private $_ID_MODUL_;
+    
+    /** @var Nom del mòdul amb el que s'ha desat a la bbdd */
+    private $_TXT_MODUL_;
+    
     /**  @var string $model Conté el model */
     private $model;
 
@@ -63,7 +63,7 @@ final class conceptscontroller extends controller {
 
     /** @var bool $permisEscriptura Indica si te permis de lectura */
     private $permisEscriptura;    
-    
+      
 
         //$this->permisEscriptura = permis::getPermisEscriptura($_SESSION['idUsuari'] , self::_ID_MODUL_ , '');
     
@@ -72,18 +72,42 @@ final class conceptscontroller extends controller {
       * @access public
       */    
     public function __construct ( ) {
-
-        /** estableix els valors inicials */
-        $this->setInitValues ( );
         
-        if ( filter_has_var ( INPUT_GET , 'action' ) ) {  /** si hi ha establerta una acció */
+        $row = modul::getAddonByController ( str_replace ( "controller" , "" , __CLASS__ ) );
+        
+        if ( !is_null ( $row ) ) { /* si troba el mòdul */
             
-            /** recupera la acció */
-            $this->action = filter_input ( INPUT_GET , 'action' );
+            $this->_ID_MODUL_= $row['idModul'];
             
-            /** executa l'acció recuperada */
-            $this->doAction ( );
+            $this->_TXT_MODUL_ = strtoupper ( $row['modul'] );
+        
+            /** estableix els valors inicials */
+            $this->setInitValues ( );
+        
+            if ( filter_has_var ( INPUT_GET , 'action' ) ) {  /** si hi ha establerta una acció */
+            
+                /** recupera la acció */
+                $this->action = filter_input ( INPUT_GET , 'action' );
+            
+                /** executa l'acció recuperada */
+                $this->doAction ( );
+            }            
+            
+        } else { /* si no troba el mòdul a la base de dades genera l'error */
+            
+             /** Recupera el número d'error */
+            $errTitle = 'Error (0x0000001)';
+            
+            /** Recupera el missatge d'error */
+            $errMessage = 'El mòdul no està a la base de dades.';
+
+            /** Crida a la función que la finestra modal amb l'error */
+            $this->setError ( $errTitle, $errMessage );
+
+            /** estableix la vista que s'ha de mostrar */
+            $this->view = $_SESSION["viewPath"] . 'dashboardllarview.php';           
         }
+        
         
         /** realiza la sortida */
         $this->output ( );
@@ -183,8 +207,8 @@ final class conceptscontroller extends controller {
         $this->model = new concepte ( );
 
         /** resupera els permisos que te l'usuari sobre l'obejte */
-        $this->permisLectura = permis::getPermisLectura ( $_SESSION['idUsuari'] , self::_ID_MODUL_ );
-        $this->permisEscriptura = permis::getPermisEscriptura ( $_SESSION['idUsuari'] , self::_ID_MODUL_ );
+        $this->permisLectura = permis::getPermisLectura ( $_SESSION['idUsuari'] , $this->_ID_MODUL_ );
+        $this->permisEscriptura = permis::getPermisEscriptura ( $_SESSION['idUsuari'] , $this->_ID_MODUL_ );
         
     }
     
@@ -361,7 +385,7 @@ final class conceptscontroller extends controller {
 
         $observacions = $this->model->link->real_escape_string( "Mòdul: ". $componentText . " Accés tipus: " . $tipusAccioText .". Resultat:  " . $resultatAccioText );
 
-        lopd::afegeixRegistre ( $_SESSION['idUsuari'] , $tipusAccio , $tipusAccioText , $resultatAccio , $resultatAccioText , self::_ID_MODUL_ , self::_TXT_MODUL_ , $observacions , $dataRegistre );       
+        lopd::afegeixRegistre ( $_SESSION['idUsuari'] , $tipusAccio , $tipusAccioText , $resultatAccio , $resultatAccioText , $this->_ID_MODUL_ , $this->_TXT_MODUL_ , $observacions , $dataRegistre );       
 
     }    
     
