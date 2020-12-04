@@ -69,7 +69,6 @@ final class userscontroller extends controller {
 
     /**  @var integer $esAdministrador Indica si l'usuari és administrador */
     private $esAdministrador;
-    
    
     /**  @var integer $intents Conté el número de intents erronis acumulats */
     private $intents;    
@@ -120,12 +119,19 @@ final class userscontroller extends controller {
             case "Edit":
                     $this->editUser ( );
                 break;
+            case "EditProfile":
+                    $this->editUserProfile ( );
+                break;            
             case "New":
                     $this->newUser ( );
                 break;
             case "Save":
                     $this->saveUser ( );
                 break;
+            case "SaveProfile":
+                    $this->saveUserProfile ( );
+                break;
+            
             case "Delete":
                     $this->deleteUser ( );
                 break;
@@ -165,8 +171,10 @@ final class userscontroller extends controller {
         $this->usuari = $this->model->getLlistaUsuaris ( );
         
         /** estableix la vista que s'ha de mostrar */
-        $this->view = $_SESSION["viewPath"] . 'usersview.php';        
+        $this->view = $_SESSION["viewPath"] . 'usersview.php';   
+
     }
+    
     
     /** 
       * Prepara la vista de la fitxa del usuari.
@@ -181,7 +189,7 @@ final class userscontroller extends controller {
         
         /** crida al mètode que recupera la llista de politiques */
         $this->llistaPolitiques = $politica->getLlistaPolitiques ( null , $order );
-        
+                
         /** estableix la vista que s'ha de mostrar */
         $this->view = $_SESSION["viewPath"] . 'userview.php';        
         
@@ -207,6 +215,24 @@ final class userscontroller extends controller {
 
             /** crida al mètode que recupera la política indicada */
             $this->politica = $politica->getPoliticaById ( $this->usuari['idPolitica'] );
+            
+        }
+        
+    }
+    
+    /** 
+      * Estableix la vista per editar el perfil de l'usuari.
+      * @access private
+      */
+    private function editUserProfile ( ) {
+
+        if ( filter_has_var ( INPUT_POST, 'idModificar' ) ) {  /** si s'ha sel·leccionat usuari */
+            
+            /** crida al mètode que recupera l'usuari indicat */
+            $this->usuari = $this->model->getUsuariById ( filter_input ( INPUT_POST, 'idModificar' ) );
+            
+            /** estableix la vista que s'ha de mostrar */
+            $this->view = $_SESSION["viewPath"] . 'userprofileview.php';            
             
         }
         
@@ -245,6 +271,29 @@ final class userscontroller extends controller {
         }        
         
     }
+    
+     /** 
+      * Desa les dades del perfil l'usuari.
+      * @access private
+      */
+    private function saveUserProfile ( ) {
+        
+        /** recuperem els valors de les variables POST que venen del formulari */
+        $this->nom = $this->model->link->real_escape_string( filter_input ( INPUT_POST, 'nom' ) );
+        $this->cognoms = $this->model->link->real_escape_string( filter_input ( INPUT_POST, 'cognoms' ) );
+        $this->correu = $this->model->link->real_escape_string( filter_input ( INPUT_POST, 'correu', FILTER_VALIDATE_EMAIL ) );
+        $this->paraulaPas = $this->model->link->real_escape_string( filter_input ( INPUT_POST, 'paraulaPas' ) );
+
+        if ( ( filter_has_var ( INPUT_POST, 'idUsuari' ) ) && ( ( filter_input ( INPUT_POST, 'idUsuari' ) ) != "" ) ) { /** si s'ha sel·leccionat usuari executa el mètode Update */
+            
+            
+            $this->updateUserProfile( filter_input ( INPUT_POST, 'idUsuari' ) );
+        
+            
+        }     
+        
+    }   
+     
     
     /** Estableix el valors d'un usuari enviats mitjançant un formulari.
       * @access private
@@ -338,6 +387,45 @@ final class userscontroller extends controller {
         /** crida al mètode que mostra la llista d'usuaris */
         $this->viewList ( );
         
+    }
+    
+    /**
+      * Actualitza el perfil de l'usuari a la bbdd i estableix la vista a mostrar.
+      * @access private
+      * @param integer $idUsuari Valor del camp per la clàusula WHERE de SQL.
+    */
+    private function updateUserProfile ( $idUsuari ) {
+
+        /**  @var string $fields Conté els camps per la consulta */
+        $fields = "nom='" . $this->nom . "',cognoms='" . $this->cognoms . "',correu='" . $this->correu . "' ";
+
+        if ( $fields != "" ) {  /** si s'han omplert els camps */
+            
+            /** executa el mètode per actualitzar un usuari */
+            $this->usuari = $this->model->modificaUsuari ( $idUsuari, $fields );
+        
+        }
+
+        if( $this->paraulaPas <> '' ) { /** si s'ha omplert el camp de la paraula de pas */
+            
+            /** genera un hash per la paraula de pas escollida */
+            $newPasswordEncrypted = password_hash ( $this->paraulaPas, PASSWORD_BCRYPT );
+
+            $dataPasword = date( "Y-m-d H:i:s" );
+        
+            /**  @var string $fields Conté els camps per la consulta */
+            $fields = $idUsuari . ",'";
+
+            $fields = $fields . $newPasswordEncrypted . "','" . $dataPasword . "'";            
+            
+            /** afegeix la paraula de pas a la bbdd */
+            $this->modelParuala->afegeixParaula ( $fields );
+        
+        } 
+
+        /** estableix la vista que s'ha de mostrar */
+        $this->view = $_SESSION["viewPath"] . 'dashboardllarview.php';   
+
     }
     
     /** 
