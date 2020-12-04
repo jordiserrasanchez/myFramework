@@ -82,6 +82,28 @@ final class modul extends db {
        return $this->getRow ( $sql );        
        
     }
+    
+    /** 
+      * Retorna una matriu associativa amb un mòdul en funció del nome del seu controlador.
+      * @param string $controllerName Valor del camp per la clàusula WHERE de SQL.
+      * @return array Matriu d'una fila associativa del mòdul.
+      * @access public
+      */
+    public static function getAddonByController ( $controllerName ) {
+
+        
+        /** crea l'objecte base de dades */
+        $db = new db ();        
+        
+        $sql = "SELECT * FROM " . _DB_PREFIX_ . "moduls WHERE controlador = '" . $controllerName . "'";
+        
+        $row = $db->getRow ( $sql );
+        
+        return $row;        
+       
+    }    
+    
+    
     /** 
       * Agfegeix un mòdul a la BBDD.
       * @param integer $fields Valor dels camps per la clàusula VALUES de SQL.
